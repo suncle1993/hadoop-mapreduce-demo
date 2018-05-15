@@ -17,6 +17,7 @@ ip_dict = {}
 
 
 def is_internal(ip):
+    """判断ip是否在国内"""
     if ip_dict.get(ip, -1) != -1:
         return ip_dict[ip]
     payload = {
@@ -40,6 +41,7 @@ def is_internal(ip):
 
 
 def read_mapper_output(std_input, separator='\t'):
+    """生成器：读取mapper的输出"""
     for line in std_input:
         yield line.rstrip().split(separator, 1)
 
@@ -50,7 +52,7 @@ def main(separator='\t'):
         internal_flow = oversea_flow = 0
         try:
             for _, rest in group:
-                ip, up_flow, down_flow = rest.split('\t')
+                _, ip, up_flow, down_flow = rest.split('\t')
                 if is_internal(ip):
                     internal_flow += int(up_flow) + int(down_flow)
                 else:
